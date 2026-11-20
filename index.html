@@ -1,1 +1,334 @@
 
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080914">
+<title>ESVIO AI</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ background:#080914;
+ color:white;
+ font-family:Arial,sans-serif;
+ min-height:100vh;
+}
+header{
+ height:70px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 20px;
+ border-bottom:1px solid #25253d;
+}
+.logo{
+ font-size:27px;
+ font-weight:bold;
+ letter-spacing:2px;
+ background:linear-gradient(90deg,#a65cff,#38baff);
+ background-clip:text;
+ color:transparent;
+}
+.menu{
+ background:none;
+ border:0;
+ color:white;
+ font-size:27px;
+ cursor:pointer;
+}
+.layout{display:flex;min-height:calc(100vh - 70px)}
+aside{
+ width:250px;
+ padding:22px 15px;
+ border-right:1px solid #25253d;
+}
+.nav{
+ display:block;
+ padding:15px;
+ margin-bottom:9px;
+ border-radius:12px;
+ color:#b9b9d0;
+ cursor:pointer;
+ font-size:15px;
+ background:transparent;
+ border:0;
+ text-align:left;
+ width:100%;
+}
+.nav:hover,.nav.active{
+ background:#201a3b;
+ color:#bd83ff;
+}
+main{
+ flex:1;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ padding:30px 20px;
+ min-width:0;
+}
+.welcome{
+ text-align:center;
+ margin-top:22px;
+}
+.welcome h1{
+ font-size:30px;
+ margin-bottom:12px;
+}
+.gradient{
+ background:linear-gradient(90deg,#a35cff,#39baff);
+ background-clip:text;
+ color:transparent;
+}
+.welcome p{color:#999bb5;font-size:14px}
+.orb{
+ width:190px;
+ height:190px;
+ border-radius:50%;
+ margin:45px auto 30px;
+ background:
+ radial-gradient(circle at 35% 30%,#ffffff 0%,#b68aff 8%,#7440ec 30%,#152a89 65%,#080914 80%);
+ box-shadow:0 0 35px #8b4cff,0 0 85px #285dff80,inset -15px -20px 40px #080914;
+ animation:float 4s ease-in-out infinite,glow 3s infinite alternate;
+}
+@keyframes float{
+ 0%,100%{transform:translateY(0) scale(1)}
+ 50%{transform:translateY(-12px) scale(1.04)}
+}
+@keyframes glow{
+ from{filter:brightness(.9)}
+ to{filter:brightness(1.35)}
+}
+.chat{
+ width:100%;
+ max-width:720px;
+ margin-top:10px;
+}
+.messages{
+ min-height:100px;
+ max-height:280px;
+ overflow-y:auto;
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+ margin-bottom:15px;
+}
+.message{
+ padding:13px 16px;
+ border-radius:15px;
+ max-width:85%;
+ line-height:1.5;
+ font-size:14px;
+}
+.ai{
+ background:#17172a;
+ border:1px solid #343050;
+ align-self:flex-start;
+}
+.user{
+ background:linear-gradient(120deg,#6738c9,#276bd5);
+ align-self:flex-end;
+}
+.input-area{
+ display:flex;
+ gap:9px;
+ background:#151526;
+ border:1px solid #393657;
+ padding:9px;
+ border-radius:18px;
+}
+input{
+ flex:1;
+ min-width:0;
+ background:transparent;
+ border:0;
+ outline:none;
+ color:white;
+ font-size:15px;
+ padding:10px;
+}
+.send{
+ border:0;
+ background:linear-gradient(120deg,#9b50ff,#287fff);
+ color:white;
+ padding:0 20px;
+ border-radius:12px;
+ font-size:17px;
+ cursor:pointer;
+}
+.language{
+ margin-top:18px;
+ background:#17172a;
+ color:white;
+ border:1px solid #393657;
+ border-radius:10px;
+ padding:10px;
+}
+.section{
+ display:none;
+ width:100%;
+ max-width:720px;
+ padding:25px 5px;
+}
+.section.active{display:block}
+.section h2{margin-bottom:20px}
+.tile{
+ padding:20px;
+ margin:12px 0;
+ background:#17172a;
+ border:1px solid #393657;
+ border-radius:15px;
+}
+.tile p{color:#a5a5bd;margin-top:8px}
+footer{
+ color:#696981;
+ font-size:12px;
+ text-align:center;
+ margin-top:auto;
+ padding:35px 10px 15px;
+}
+@media(max-width:650px){
+ aside{
+ display:none;
+ position:absolute;
+ z-index:5;
+ background:#101020;
+ height:calc(100vh - 70px);
+ width:250px;
+ }
+ aside.open{display:block}
+ main{padding:20px 14px}
+ .orb{width:160px;height:160px;margin-top:35px}
+ .welcome h1{font-size:25px}
+}
+</style>
+</head>
+
+<body>
+<header>
+<button class="menu" onclick="toggleMenu()">☰</button>
+<div class="logo">ESVIO</div>
+<div style="color:#aaa;font-size:13px">AI ASSISTANT</div>
+</header>
+
+<div class="layout">
+<aside id="sidebar">
+<button class="nav active" onclick="showPage('home',this)">✦ Ana Sayfa</button>
+<button class="nav" onclick="showPage('chat',this)">◉ AI Sohbet</button>
+<button class="nav" onclick="showPage('sports',this)">⚽ Spor Merkezi</button>
+<button class="nav" onclick="showPage('language',this)">🌐 Dil Öğrenme</button>
+<button class="nav" onclick="showPage('profile',this)">👤 Profil</button>
+<button class="nav" onclick="showPage('settings',this)">⚙ Ayarlar</button>
+</aside>
+
+<main>
+<section class="section active" id="home">
+<div class="welcome">
+<h1>Merhaba, <span class="gradient">ESVIO'ya Hoş Geldin</span></h1>
+<p>Yapay zekânla yeni bir dünyayı keşfet.</p>
+</div>
+<div class="orb"></div>
+<div class="chat">
+<div class="messages" id="messages">
+<div class="message ai">Merhaba! Ben ESVIO AI. Sana nasıl yardımcı olabilirim?</div>
+</div>
+<div class="input-area">
+<input id="userInput" placeholder="ESVIO'ya bir şey sor..." onkeydown="if(event.key==='Enter')sendMessage()">
+<button class="send" onclick="sendMessage()">➤</button>
+</div>
+</div>
+<select class="language" id="lang">
+<option value="tr">🇹🇷 Türkçe</option>
+<option value="ar">🇮🇶 العربية</option>
+<option value="en">🇬🇧 English</option>
+</select>
+</section>
+
+<section class="section" id="chat">
+<h2>✦ ESVIO AI Sohbet</h2>
+<div class="orb"></div>
+<div class="chat">
+<div class="messages" id="messages2">
+<div class="message ai">Merhaba! Ben ESVIO.</div>
+</div>
+<div class="input-area">
+<input id="input2" placeholder="Mesajını yaz..." onkeydown="if(event.key==='Enter')sendMessage2()">
+<button class="send" onclick="sendMessage2()">➤</button>
+</div>
+</div>
+</section>
+
+<section class="section" id="sports">
+<h2>⚽ Spor Merkezi</h2>
+<div class="tile"><h3>Canlı Skorlar</h3><p>Maç sonuçları ve canlı skorlar için hazırlanıyor.</p></div>
+<div class="tile"><h3>Ligler</h3><p>Futbol ligleri ve takımlar.</p></div>
+<div class="tile"><h3>İstatistikler</h3><p>Takım ve oyuncu istatistikleri.</p></div>
+</section>
+
+<section class="section" id="language">
+<h2>🌐 Dil Öğrenme Merkezi</h2>
+<div class="tile"><h3>İngilizce</h3><p>Kelime öğrenme ve pratik.</p></div>
+<div class="tile"><h3>Arapça</h3><p>Arapça kelimeler ve konuşma.</p></div>
+<div class="tile"><h3>Türkçe</h3><p>Türkçe öğrenme ve alıştırmalar.</p></div>
+</section>
+
+<section class="section" id="profile">
+<h2>👤 Profil</h2>
+<div class="tile"><h3>ESVIO Kullanıcısı</h3><p>Profil sistemi hazırlanıyor.</p></div>
+</section>
+
+<section class="section" id="settings">
+<h2>⚙ Ayarlar</h2>
+<div class="tile"><h3>Görünüm</h3><p>Future Silver · Dark Mode</p></div>
+<div class="tile"><h3>Dil</h3><p>Türkçe · العربية · English</p></div>
+</section>
+
+<footer>ESVIO AI · Your World, Your Intelligence</footer>
+</main>
+</div>
+
+<script>
+function toggleMenu(){
+ document.getElementById('sidebar').classList.toggle('open');
+}
+function showPage(id,button){
+ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
+ button.classList.add('active');
+ document.getElementById('sidebar').classList.remove('open');
+}
+function reply(text,box){
+ const lang=document.getElementById('lang').value;
+ let answer={
+ tr:"Mesajını aldım! Gerçek yapay zekâ bağlantısı eklendiğinde sana daha kapsamlı cevaplar verebileceğim.",
+ ar:"وصلت رسالتك! سيتمكن ESVIO من الإجابة بشكل أفضل بعد ربط الذكاء الاصطناعي.",
+ en:"I received your message! I will be able to give better answers once the AI connection is added."
+ };
+ const msg=document.createElement('div');
+ msg.className='message ai';
+ msg.textContent=answer[lang]||answer.tr;
+ box.appendChild(msg);
+ box.scrollTop=box.scrollHeight;
+}
+function send(inputId,messagesId){
+ const input=document.getElementById(inputId);
+ const box=document.getElementById(messagesId);
+ const value=input.value.trim();
+ if(!value)return;
+ const msg=document.createElement('div');
+ msg.className='message user';
+ msg.textContent=value;
+ box.appendChild(msg);
+ input.value='';
+ box.scrollTop=box.scrollHeight;
+ setTimeout(()=>reply(value,box),400);
+}
+function sendMessage(){send('userInput','messages')}
+function sendMessage2(){send('input2','messages2')}
+</script>
+</body>
+</html>
